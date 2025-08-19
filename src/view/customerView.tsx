@@ -68,7 +68,7 @@ function CustomerView() {
 
     await axios
       .delete(
-        `http://localhost:8080/Billing_System_war_exploded/item?code=${deleteId}`,
+        `http://localhost:8080/Billing_System_war_exploded/item?id=${deleteId}`,
         config
       )
       .then((response) => {
