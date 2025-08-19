@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar/sidebar.tsx";
 import SidebarItem from "../components/sidebarItems/sidebarItem.tsx";
 import {
@@ -7,10 +8,14 @@ import {
   CiPenpot,
   CiShop,
 } from "react-icons/ci";
-import Header from "../components/header/header.tsx";
 import { Outlet } from "react-router-dom";
+import Header from "../components/header/header.tsx";
 
 function HomeView() {
+  const [username, setUsername] = useState("test");
+  const [email, setEmail] = useState("hello");
+  const [proPic, setProPic] = useState("hhh");
+
   return (
     <>
       {/* <section
@@ -64,6 +69,15 @@ function HomeView() {
             ]}
           />
         </aside>
+
+        <main id={"main-content"} className={"flex-1 flex flex-col"}>
+          <Header
+            username={`${username}`}
+            email={`${email}`}
+            proPic={`${proPic}`}
+            // callBack={handleSidebar}
+          />
+        </main>
       </section>
     </>
   );
