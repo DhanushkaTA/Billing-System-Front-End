@@ -7,25 +7,87 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import Cookies from "js-cookie";
 
+import Model from "../components/model/model.tsx";
+
 interface ItemData {
-  _id: string;
-  code: string;
-  name: string;
+  itemCode: string;
   description: string;
-  category: string;
-  brand: string;
-  regularPrice: number;
-  salePrice: number;
-  qty: number;
-  warranty: string;
-  stockStatus: boolean;
-  itemPic: string;
+  unitPrice: number;
+  qtyOnHand: number;
 }
 
 function ItemView() {
   const [dataArray, setDataArray] = useState<ItemData[]>([]);
 
-  
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [alertType, setAlertType] = useState<string>("");
+  const [alertMsg, setAlertMsg] = useState<string>("");
+
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    getAllItem();
+  }, []);
+
+  function getAllItem() {
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    axios
+      .get(`http://localhost:8080/Billing_System_war_exploded/item`, config)
+      .then((response) => {
+        console.log(response.data.data);
+
+        setDataArray(response.data.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+
+  // Delete item ------------------------------------------------------------------------------------------------
+  function clickDeleteBtn(id: string) {
+    setDeleteId(id);
+    setOpen(true);
+  }
+
+  async function handleDeleteItem() {
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    await axios
+      .delete(`http://localhost:8080/Billing_System_war_exploded/item?code=${deleteId}`, config)
+      .then((response) => {
+        alert(response.data.message);
+        console.log(response.data);
+        showAlert("success", response.data.message);
+      })
+      .catch((error) => {
+        alert(error);
+        console.log(error);
+        showAlert("error", "Something went wrong!");
+      });
+    setOpen(false);
+    setDeleteId("");
+    getAllItem();
+  }
+
+  function showAlert(type: string, msg: string) {
+    setAlertType(type);
+    setAlertMsg(msg);
+    //Open alert
+    setAlertOpen(true);
+  }
+
   return (
     <section
       className={
@@ -36,11 +98,12 @@ function ItemView() {
         <label className={"font-Euclid text-2xl"}>Item</label>
       </div>
 
-      {/*<Alert open={alertOpen}*/}
-      {/*       type={alertType}*/}
-      {/*       message={alertMsg}*/}
-      {/*       onClose={() => setAlertOpen(false)}*/}
-      {/*/>*/}
+      <Alert
+        open={alertOpen}
+        type={alertType}
+        message={alertMsg}
+        onClose={() => setAlertOpen(false)}
+      />
 
       {/*--------------------------------------------------------------------------------------*/}
 
@@ -49,11 +112,9 @@ function ItemView() {
           "w-full h-max flex flex-row justify-between items-center px-2"
         }
       >
-        {/* <button
+        <button
           onClick={() => navigate("/admin/add-item")}
-          className={`${
-            userIdAdmin ? "block" : "hidden"
-          }  px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
+          className={`px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
                      flex flex-row items-center cursor-pointer rounded-md`}
         >
           <CiCirclePlus size={20} className={"mr-2"} />
@@ -61,14 +122,14 @@ function ItemView() {
           <span>Add Item</span>
         </button>
 
-        <Alert
+        {/* <Alert
           open={alertOpen}
           type={alertType}
           message={alertMsg}
           onClose={() => setAlertOpen(false)}
-        /> */}
+        />  */}
 
-        {/* <Model open={open} onClose={() => setOpen(false)}>
+        <Model open={open} onClose={() => setOpen(false)}>
           <button
             key={"1"}
             className="btn btn-danger w-full"
@@ -83,7 +144,7 @@ function ItemView() {
           >
             Cancel
           </button>
-        </Model> */}
+        </Model>
       </div>
 
       {/*//Table container --------------------------------------------------------------------------------*/}
@@ -109,19 +170,11 @@ function ItemView() {
               }
             >
               <tr className={""}>
-                <th className={"py-2 pl-2 text-left uppercase "}>item</th>
-                <th className={"py-2 text-left "}>CODE</th>
+                <th className={"py-2 pl-2 text-left uppercase "}>code</th>
                 <th className={"py-2 text-left uppercase "}>description</th>
-                <th className={"py-2 text-center uppercase "}>category</th>
-                <th className={"py-2 text-left uppercase"}>brand</th>
                 <th className={"py-2 text-left uppercase"}>price</th>
                 <th className={"py-2 text-left uppercase"}>qty</th>
-                <th className={"py-2 text-center uppercase"}>war</th>
-                <th
-                  className={`block py-2 text-center`}
-                >
-                  ACTION
-                </th>
+                <th className={`block py-2 text-center`}>ACTION</th>
               </tr>
             </thead>
 
@@ -131,31 +184,13 @@ function ItemView() {
                   <tr
                     key={index}
                     className={`${
-                      value.qty === 0 ? "bg-red-100/50" : "bg-white"
+                      value.qtyOnHand === 0 ? "bg-red-100/50" : "bg-white"
                     }`}
                   >
-                    <td className={`flex flex-row items-center border-b `}>
-                      <div>
-                        <img
-                          // src={"http://localhost:9000/images/" + value.itemPic}
-                          src={"ht/images/"}
-                          className={
-                            "w-32 h-32 object-fill bg-center bg-cover mr-3"
-                          }
-                          alt={"item"}
-                          title={"Item"}
-                        />
-                      </div>
-                    </td>
-
-                    {/*<td className={`font-medium text-[13px] border-b text-left`}>*/}
-                    {/*    {value._id}*/}
-                    {/*</td>*/}
-
                     <td
                       className={"font-medium text-[13px] border-b text-left"}
                     >
-                      {value.code}
+                      {value.itemCode}
                     </td>
 
                     <td
@@ -163,55 +198,31 @@ function ItemView() {
                         "font-medium text-[13px] border-b text-left max-w-[300px]"
                       }
                     >
-                      {value.name}
+                      {value.description}
                     </td>
-
-                    <td
-                      className={"font-medium text-[13px] border-b text-center"}
-                    >
-                      <span
-                        className={
-                          "text-[#7600bc] bg-purple-400/30 py-1 px-4 rounded-full"
-                        }
-                      >
-                        {value.category}
-                      </span>
-                    </td>
-
-                    <td
-                      className={"font-medium text-[13px] border-b text-center"}
-                    ></td>
 
                     <td
                       className={"font-medium text-[13px] border-b text-left"}
                     >
-                      {value.salePrice}
+                      {value.unitPrice}
                     </td>
 
                     <td
                       className={`font-medium text-[13px] border-b text-left 
                                                     ${
-                                                      value.qty === 0
+                                                      value.qtyOnHand === 0
                                                         ? "text-red-600"
                                                         : "text-black"
                                                     }`}
                     >
-                      {value.qty}
+                      {value.qtyOnHand}
                     </td>
 
-                    <td
-                      className={"font-medium text-[13px] border-b text-center"}
-                    >
-                      {value.warranty}
-                    </td>
-
-                    <td
-                      className={`table-cell w-[10%] border-b text-center`}
-                    >
-                      {/* <button
+                    <td className={`table-cell w-[10%] border-b text-center`}>
+                      <button
                         onClick={() =>
                           navigate("/admin/add-item", {
-                            state: { item: value, list: list },
+                            state: { item: value },
                           })
                         }
                         className={
@@ -223,17 +234,16 @@ function ItemView() {
                           size={18}
                           className={"group-hover:text-[#2355FF] "}
                         />
-                      </button> */}
+                      </button>
 
-                      {/* <button
+                      <button
                         className={
                           "p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"
                         }
-                        onClick={() => clickDeleteBtn(value._id)}
+                        onClick={() => clickDeleteBtn(value.itemCode)}
                       >
-                        
                         <CiTrash size={18} className={"text-red-600"} />
-                      </button> */}
+                      </button>
                     </td>
                   </tr>
                 );

@@ -77,6 +77,15 @@ function HomeView() {
             proPic={`${proPic}`}
             // callBack={handleSidebar}
           />
+
+          {/*------------------------------- Content here ----------------------------------*/}
+
+                    {/*#EDEFEE*/}
+                    <section className={"p-3 flex-1 flex justify-center items-center bg-[#F6F8FC]"}>
+
+                        <Outlet/>
+
+                    </section>
         </main>
       </section>
     </>

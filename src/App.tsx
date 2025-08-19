@@ -1,7 +1,7 @@
 import "./App.css";
 import Login from "./view/login.tsx";
 import ItemView from "./view/itemView.tsx";
-import AddItem from "./view/adduser.tsx";
+import Adduser from "./view/adduser.tsx";
 import LoginDetailsView from "./view/loginDetailsView.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderView from "./view/orderView.tsx";
@@ -19,7 +19,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={"/"} element={<Login />} />
-          <Route path={"/home"} element={<HomeView />} />
+          <Route path={"/home"} element={<HomeView />}>
+            <Route path={"item"} element={<ItemView />} />
+            <Route path={"add-item"} element={<Adduser />} />
+          </Route>
           {/* <Route path={"/admin"} element={<AdminView/>}>
                     <Route path={"admin-dash"} element={<AdminDashboard/>}/>
                     <Route path={"user"} element={<UserView/>}/>
@@ -31,15 +34,7 @@ function App() {
                     <Route path={"order"} element={<OrderView/>}/>
                 </Route> */}
 
-          {/* <Route path={"/rec"} element={<RecView/>}> */}
-          {/*<Route path={"admin-dash"} element={<AdminDashboard/>}/>*/}
-          {/*<Route path={"user"} element={<UserView/>}/>*/}
-          {/* <Route path={"item"} element={<ItemView/>}/> */}
-          {/*<Route path={"add-user"} element={<Adduser/>}/>*/}
-          {/* <Route path={"cart"} element={<CheackOutView/>}/> */}
-          {/*<Route path={"login"} element={<LoginDetailsView/>}/>*/}
-          {/* <Route path={"order"} element={<OrderView/>}/> */}
-          {/* </Route> */}
+          
         </Routes>
       </BrowserRouter>
 
