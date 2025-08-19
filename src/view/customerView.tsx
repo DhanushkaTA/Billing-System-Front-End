@@ -257,7 +257,7 @@ function CustomerView() {
                     <td className={`table-cell w-[10%] border-b text-center`}>
                       <button
                         onClick={() =>
-                          navigate("/home/add-item", {
+                          navigate("/home/add-customer", {
                             state: { customer: value },
                           })
                         }
