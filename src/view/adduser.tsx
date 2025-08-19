@@ -12,15 +12,15 @@ import Alert from "../components/alert/alert.tsx";
 
 function Adduser() {
   let location = useLocation();
-  let user = location?.state?.user;
+  let item = location?.state?.item;
 
   const [avatarImage, setAvetarImage] = useState(
     "../src/assets/images/icon/avator.png"
   );
 
-  const [description, setDescription] = useState("");
-  const [unitPrice, setUnitPrice] = useState("");
-  const [qtyOnHand, setQtyOnHand] = useState(user ? user.qtyOnHand : "");
+  const [description, setDescription] = useState(item ? item.description : "");
+  const [unitPrice, setUnitPrice] = useState(item ? item.unitPrice : "");
+  const [qtyOnHand, setQtyOnHand] = useState(item ? item.qtyOnHand : "");
 
   const [descriptionValid, setDescriptionValid] = useState(true);
   const [unitPriceValid, setUnitPriceValid] = useState(true);
@@ -39,14 +39,10 @@ function Adduser() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    // if (user) {
-    //   setAvetarImage(`http://localhost:9000/images/${user.proPic}`);
-    //   let name_array = user.fullName.split(" ");
-    //   setDescription(name_array[0]);
-    //   setUnitPrice(name_array[1]);
-    //   setStateIsUpdate(true);
-    //   setBtnText("Update User");
-    // }
+    if (item) {
+      setStateIsUpdate(true);
+      setBtnText("Update User");
+    }
   }, []);
 
   const handleInput = (e: any, type: string): void => {
@@ -82,7 +78,9 @@ function Adduser() {
       ? setDescriptionValid(false)
       : !Validator.floteNumberValidator(unitPrice)
       ? setUnitPriceValid(false)
-      : !Validator.emailValidator(qtyOnHand);
+      : !Validator.numberValidator(qtyOnHand)
+      ? setQtyValid(false)
+      : setValidateValues(true);
     return;
   };
 
@@ -113,8 +111,6 @@ function Adduser() {
       qtyOnHand: qtyOnHand,
     });
 
-    alert("hellooo");
-
     await axios
       .post(
         "http://localhost:8080/Billing_System_war_exploded/item",
@@ -123,7 +119,7 @@ function Adduser() {
       )
       .then((response) => {
         alert(response.data);
-        showAlert("success", response.data.message);
+        showAlert("success", "Create successfully 🌟");
         setTimeout(function () {
           navigate("/home/item");
         }, 1001);
@@ -137,18 +133,21 @@ function Adduser() {
 
   const updateUserAction = async (config: any) => {
     const data = JSON.stringify({
+      itemCode: item.itemCode,
       description: description,
       unitPrice: unitPrice,
       qtyOnHand: qtyOnHand,
     });
 
-    let formData = new FormData();
-
     await axios
-      .put("http://localhost:9000/user/update", formData, config)
+      .put(
+        "http://localhost:8080/Billing_System_war_exploded/item",
+        data,
+        config
+      )
       .then((response) => {
         console.log(response.data.data);
-        showAlert("success", response.data.message);
+        showAlert("success", "Update successfully 🌟");
         setTimeout(function () {
           navigate("/home/item");
         }, 1001);
