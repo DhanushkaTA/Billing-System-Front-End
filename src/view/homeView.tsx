@@ -53,6 +53,13 @@ function HomeView() {
                 navigate={"item"}
               />,
 
+                <SidebarItem
+                    key={"8"}
+                    icon={<CiAlignBottom size={22} />}
+                    text={"Manage Customers"}
+                    navigate={"customer"}
+                />,
+
               <SidebarItem
                 key={"7"}
                 icon={<CiShop size={23} />}
