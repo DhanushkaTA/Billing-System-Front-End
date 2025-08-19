@@ -24,3 +24,7 @@ export const floteNumberMsg :string = "Allow only numbers and decimals eg: 100, 
 
 export const descriptionMsg :string = "Allows only zero or more characters matching " +
     "any uppercase letter (A-Z), any lowercase letter (a-z) and -(dash). length must be at least 1 character and at most 255 characters";
+
+export const addressMsg :string = "Address must start with a letter (uppercase or lowercase)." +
+    "Address can contain letters (uppercase or lowercase), numbers, space and / ." +
+    "Addree must be between 3 and 225 characters in length."

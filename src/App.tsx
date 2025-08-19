@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderView from "./view/orderView.tsx";
 import HomeView from "./view/homeView";
 import CustomerView from "./view/customerView.tsx";
+import AddCustomer from "./view/addCustomer.tsx";
 
 function App() {
   // const [expanded, setExpanded] = useState(true)
@@ -24,6 +25,7 @@ function App() {
             <Route path={"item"} element={<ItemView />} />
             <Route path={"add-item"} element={<AddItem />} />
             <Route path={"customer"} element={<CustomerView />} />
+            <Route path={"add-customer"} element={<AddCustomer />} />
           </Route>
           {/* <Route path={"/admin"} element={<AdminView/>}>
                     <Route path={"admin-dash"} element={<AdminDashboard/>}/>

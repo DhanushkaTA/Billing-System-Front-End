@@ -150,7 +150,7 @@ function CustomerView() {
         </div>
 
         <button
-          onClick={() => navigate("/home/add-item")}
+          onClick={() => navigate("/home/add-customer")}
           className={`px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
                      flex flex-row items-center cursor-pointer rounded-md`}
         >

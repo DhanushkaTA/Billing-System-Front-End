@@ -4,7 +4,7 @@
 // let addressRegex=/^[a-zA-Z0-9,\/]{10,255}$/;
 // let usernameRegex=/^[a-zA-Z][a-zA-Z0-9_-]{2,19}$/
 
-let fullNameRegex=/^[a-zA-Z]{3,30}$/
+let fullNameRegex=/^[a-zA-Z ]{3,50}$/
 let passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%&?])[A-Za-z\d@#$!%&?]{8,}$/;
 let contactRegex=/^[0-9]{10}$/;
 let usernameRegex=/^[a-zA-Z][a-zA-Z0-9_\-@]{2,19}$/;
@@ -15,6 +15,8 @@ let numberRegex=/^\d+$/;
 let floteNumberRegex=/^[0-9.]*$/;
 
 let descriptionRegex=/^[A-Za-z0-9\- ]{1,255}$/;
+
+let addressRegex=/^[A-Za-z0-9\/\, ]{1,255}$/;
 
 
 export const usernameValidator = (username:string) :boolean => {
@@ -53,5 +55,9 @@ export const floteNumberValidator = (number:string):boolean => {
 
 export const descriptionValidator = (desc:string):boolean => {
     return descriptionRegex.test(desc);
+}
+
+export const addressValidator = (address:string):boolean => {
+    return addressRegex.test(address);
 }
  
