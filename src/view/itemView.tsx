@@ -113,7 +113,7 @@ function ItemView() {
         }
       >
         <button
-          onClick={() => navigate("/admin/add-item")}
+          onClick={() => navigate("/home/add-item")}
           className={`px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
                      flex flex-row items-center cursor-pointer rounded-md`}
         >
@@ -221,7 +221,7 @@ function ItemView() {
                     <td className={`table-cell w-[10%] border-b text-center`}>
                       <button
                         onClick={() =>
-                          navigate("/admin/add-item", {
+                          navigate("/home/add-item", {
                             state: { item: value },
                           })
                         }

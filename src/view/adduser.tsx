@@ -89,8 +89,7 @@ function Adduser() {
   async function creatUser() {
     const config = {
       headers: {
-        Authorization: Cookies.get("tk"),
-        "Content-Type": "multipart/form-data",
+        "content-type": "application/json",
       },
     };
 
@@ -123,11 +122,11 @@ function Adduser() {
         config
       )
       .then((response) => {
-        // alert(response.data.message)
+        alert(response.data);
         showAlert("success", response.data.message);
-        // setTimeout(function () {
-        //   navigate("/admin/user");
-        // }, 1001);
+        setTimeout(function () {
+          navigate("/home/item");
+        }, 1001);
       })
       .catch((error) => {
         // alert(error)
