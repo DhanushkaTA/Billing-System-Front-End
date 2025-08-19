@@ -207,7 +207,9 @@ function CustomerView() {
               }
             >
               <tr className={""}>
-                <th className={"py-2 pl-2 text-left uppercase "}>account num</th>
+                <th className={"py-2 pl-2 text-left uppercase "}>
+                  account num
+                </th>
                 <th className={"py-2 text-left uppercase "}>full name</th>
                 <th className={"py-2 text-left uppercase"}>address</th>
                 <th className={"py-2 text-left uppercase"}>contact</th>
@@ -219,70 +221,67 @@ function CustomerView() {
             <tbody className={"mt-3 "}>
               {dataArray.map((value, index) => {
                 return (
-                    <tr
-                        key={index}
-                        className={"bg-white"}
+                  <tr key={index} className={"bg-white"}>
+                    <td
+                      className={"font-medium text-[13px] border-b text-left"}
                     >
-                      <td
-                          className={"font-medium text-[13px] border-b text-left"}
+                      {value.accountNumber}
+                    </td>
+
+                    <td
+                      className={
+                        "font-medium text-[13px] border-b text-left max-w-[300px]"
+                      }
+                    >
+                      {value.fullName}
+                    </td>
+
+                    <td
+                      className={"font-medium text-[13px] border-b text-left"}
+                    >
+                      {value.address}
+                    </td>
+
+                    <td
+                      className={"font-medium text-[13px] border-b text-left"}
+                    >
+                      {value.phoneNumber}
+                    </td>
+
+                    <td
+                      className={"font-medium text-[13px] border-b text-left"}
+                    >
+                      {value.uniteConsumed}
+                    </td>
+
+                    <td className={`table-cell w-[10%] border-b text-center`}>
+                      <button
+                        onClick={() =>
+                          navigate("/home/add-item", {
+                            state: { customer: value },
+                          })
+                        }
+                        className={
+                          "p-1 border border-black rounded-[6px] group" +
+                          " hover:border-[#2355FF] mr-3"
+                        }
                       >
-                        {value.accountNumber}
-                      </td>
+                        <CiEdit
+                          size={18}
+                          className={"group-hover:text-[#2355FF] "}
+                        />
+                      </button>
 
-                      <td
-                          className={
-                            "font-medium text-[13px] border-b text-left max-w-[300px]"
-                          }
+                      <button
+                        className={
+                          "p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"
+                        }
+                        onClick={() => clickDeleteBtn(value.accountNumber)}
                       >
-                        {value.fullName}
-                      </td>
-
-                      <td
-                          className={"font-medium text-[13px] border-b text-left"}
-                      >
-                        {value.address}
-                      </td>
-
-                      <td
-                          className={"font-medium text-[13px] border-b text-left"}
-                      >
-                        {value.phoneNumber}
-                      </td>
-
-                      <td
-                          className={"font-medium text-[13px] border-b text-left"}
-                      >
-                        {value.uniteConsumed}
-                      </td>
-
-                      <td className={`table-cell w-[10%] border-b text-center`}>
-                        <button
-                            onClick={() =>
-                                navigate("/home/add-item", {
-                                  state: {item: value},
-                                })
-                            }
-                            className={
-                                "p-1 border border-black rounded-[6px] group" +
-                                " hover:border-[#2355FF] mr-3"
-                            }
-                        >
-                          <CiEdit
-                              size={18}
-                              className={"group-hover:text-[#2355FF] "}
-                          />
-                        </button>
-
-                        <button
-                            className={
-                              "p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"
-                            }
-                            onClick={() => clickDeleteBtn(value.itemCode)}
-                        >
-                          <CiTrash size={18} className={"text-red-600"}/>
-                        </button>
-                      </td>
-                    </tr>
+                        <CiTrash size={18} className={"text-red-600"} />
+                      </button>
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>

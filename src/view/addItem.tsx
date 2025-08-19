@@ -41,7 +41,7 @@ function AddItem() {
   useEffect(() => {
     if (item) {
       setStateIsUpdate(true);
-      setBtnText("Update User");
+      setBtnText("Update Item");
     }
   }, []);
 
@@ -175,7 +175,7 @@ function AddItem() {
       />
 
       <h1 className={"text-3xl font-[500] w-full font-Poppins"}>
-        Create a new user
+        Create a new item
       </h1>
 
       <div className={"pt-2 text-[14px] font-[500] w-full flex flex-row"}>
