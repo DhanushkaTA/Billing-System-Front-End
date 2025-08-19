@@ -11,7 +11,10 @@ let usernameRegex=/^[a-zA-Z][a-zA-Z0-9_\-@]{2,19}$/;
 let emailRegex=/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 let productName=/^[a-zA-Z0-9,\s-|_]{5,225}$/;
-let numberRegex=/^[0-9.]*$/;
+let numberRegex=/^\d+$/;
+let floteNumberRegex=/^[0-9.]*$/;
+
+let descriptionRegex=/^[A-Za-z0-9\- ]{1,255}$/;
 
 
 export const usernameValidator = (username:string) :boolean => {
@@ -43,3 +46,12 @@ export const productNameValidator = (name:string):boolean => {
 export const numberValidator = (number:string):boolean => {
     return numberRegex.test(number);
 }
+
+export const floteNumberValidator = (number:string):boolean => {
+    return floteNumberRegex.test(number);
+}
+
+export const descriptionValidator = (desc:string):boolean => {
+    return descriptionRegex.test(desc);
+}
+ 

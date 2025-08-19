@@ -14,25 +14,17 @@ function Adduser() {
   let location = useLocation();
   let user = location?.state?.user;
 
-  const fileChooser: any = useRef();
-  const imageRef: any = useRef();
-  const [profilePic, setProfilePic] = useState<any>(null);
   const [avatarImage, setAvetarImage] = useState(
     "../src/assets/images/icon/avator.png"
   );
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(user ? user.phoneNumber : "");
-  const [email, setEmail] = useState(user ? user.email : "");
-  const [role, setRole] = useState(user ? user.role : "New User");
-  const [username, setUsername] = useState(user ? user.username : "");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
+  const [description, setDescription] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
+  const [qtyOnHand, setQtyOnHand] = useState(user ? user.qtyOnHand : "");
 
-  const [fNameValid, setFNameValid] = useState(true);
-  const [lNameValid, setLNameValid] = useState(true);
-  const [emailValid, setEmailValid] = useState(true);
+  const [descriptionValid, setDescriptionValid] = useState(true);
+  const [unitPriceValid, setUnitPriceValid] = useState(true);
+  const [qtyValid, setQtyValid] = useState(true);
 
   const [validateValues, setValidateValues] = useState(false);
 
@@ -47,57 +39,50 @@ function Adduser() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      setAvetarImage(`http://localhost:9000/images/${user.proPic}`);
-
-      let name_array = user.fullName.split(" ");
-      setFirstName(name_array[0]);
-      setLastName(name_array[1]);
-
-      setStateIsUpdate(true);
-      setBtnText("Update User");
-    }
+    // if (user) {
+    //   setAvetarImage(`http://localhost:9000/images/${user.proPic}`);
+    //   let name_array = user.fullName.split(" ");
+    //   setDescription(name_array[0]);
+    //   setUnitPrice(name_array[1]);
+    //   setStateIsUpdate(true);
+    //   setBtnText("Update User");
+    // }
   }, []);
 
   const handleInput = (e: any, type: string): void => {
     switch (type) {
-      case "firstName":
-        setFirstName(e.target.value);
-        setFNameValid(Validator.fullNameValidator(e.target.value));
+      case "description":
+        setDescription(e.target.value);
+        setDescriptionValid(Validator.descriptionValidator(e.target.value));
         break;
-      case "lastName":
-        setLastName(e.target.value);
-        setLNameValid(Validator.fullNameValidator(e.target.value));
+      case "unitPrice":
+        setUnitPrice(e.target.value);
+        setUnitPriceValid(Validator.floteNumberValidator(e.target.value));
         break;
-      case "email":
-        setEmail(e.target.value);
-        setEmailValid(Validator.emailValidator(e.target.value));
-        break;
-      case "role":
-        setRole(e.target.value);
+      case "qtyOnHand":
+        setQtyOnHand(e.target.value);
+        setQtyValid(Validator.numberValidator(e.target.value));
         break;
     }
   };
 
   const cheackValues = () => {
-    !Validator.fullNameValidator(firstName)
-      ? setFNameValid(false)
-      : !Validator.fullNameValidator(lastName)
-      ? setLNameValid(false)
-      : !Validator.emailValidator(email)
-      ? setEmailValid(false)
-      : !Validator.contactValidator(phoneNumber);
+    !Validator.descriptionValidator(description)
+      ? setDescriptionValid(false)
+      : !Validator.floteNumberValidator(unitPrice)
+      ? setUnitPriceValid(false)
+      : !Validator.numberValidator(qtyOnHand)
+      ? setQtyValid(false)
+      : setValidateValues(true);
     return;
   };
 
   const cheackValuesForUpdate = () => {
-    !Validator.fullNameValidator(firstName)
-      ? setFNameValid(false)
-      : !Validator.fullNameValidator(lastName)
-      ? setLNameValid(false)
-      : !Validator.emailValidator(email)
-      ? setEmailValid(false)
-      : !Validator.contactValidator(phoneNumber);
+    !Validator.descriptionValidator(description)
+      ? setDescriptionValid(false)
+      : !Validator.floteNumberValidator(unitPrice)
+      ? setUnitPriceValid(false)
+      : !Validator.emailValidator(qtyOnHand);
     return;
   };
 
@@ -124,27 +109,25 @@ function Adduser() {
 
   const createUserAction = async (config: any) => {
     const data = JSON.stringify({
-      username: username,
-      fullName: firstName + " " + lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      password: password,
-      role: role,
+      description: description,
+      unitPrice: unitPrice,
+      qtyOnHand: qtyOnHand,
     });
 
-    let formData = new FormData();
-    formData.append("user", data);
-    formData.append("file", profilePic);
-    formData.append("type", "user");
+    alert("hellooo");
 
     await axios
-      .post("http://localhost:9000/user/save", formData, config)
+      .post(
+        "http://localhost:8080/Billing_System_war_exploded/item",
+        data,
+        config
+      )
       .then((response) => {
         // alert(response.data.message)
         showAlert("success", response.data.message);
-        setTimeout(function () {
-          navigate("/admin/user");
-        }, 1001);
+        // setTimeout(function () {
+        //   navigate("/admin/user");
+        // }, 1001);
       })
       .catch((error) => {
         // alert(error)
@@ -155,30 +138,20 @@ function Adduser() {
 
   const updateUserAction = async (config: any) => {
     const data = JSON.stringify({
-      id: user._id,
-      username: username,
-      fullName: firstName + " " + lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      role: role,
-      proPic: user.proPic,
+      description: description,
+      unitPrice: unitPrice,
+      qtyOnHand: qtyOnHand,
     });
 
     let formData = new FormData();
-    formData.append("user", data);
-    formData.append("file", profilePic);
 
     await axios
       .put("http://localhost:9000/user/update", formData, config)
       .then((response) => {
-        // alert(response.data.message)
-        setAvetarImage(
-          `http://localhost:9000/images/${response.data.data.proPic}`
-        );
         console.log(response.data.data);
         showAlert("success", response.data.message);
         setTimeout(function () {
-          navigate("/admin/user");
+          navigate("/home/item");
         }, 1001);
         // window.location.reload();
       })
@@ -230,45 +203,6 @@ function Adduser() {
           "w-full lg:flex-1 h-max gap-10 lg:gap-5 flex mt-5 flex-col lg:flex-row justify-around items-center lg:items-start "
         }
       >
-        {/* <div
-          className={
-            "lg:min-w-[350px] w-full sm:w-[400px] lg:w-[25%] h-[500px] bg-white rounded-xl shadow-1 p-5 flex flex-col justify-center items-center"
-          }
-        > */}
-        {/*Profile pic -----------------------------------------------*/}
-        {/* <div
-                        className={"w-[160px] h-[160px] border border[#E8E8E8] rounded-[50%] flex justify-center items-center"}>
-                        <img id={"profilePic"}
-                             src={`${profilePic ? URL.createObjectURL(profilePic) : avatarImage}`}
-                             alt={"profile"} title={"profile"}
-                             className={"w-36 h-[148px] rounded-[50%] bg-[#E8E8E8] cursor-pointer"}
-                             onClick={clickProfile}
-                             ref={imageRef}/>
-                    </div>
-
-                    <label className={"text-center text-[12px] text-[#777c81] font-[500] mt-5 font-Euclid"}>
-                        Allowed *.jpeg,*jpg,*.png,*.gif
-                    </label>
-
-                    <label className={"mt-3.5 text-[12px] font-Euclid px-2 py-1 " +
-                        `font-[600] rounded-lg
-                         ${role=="admin" ? "admin-label" : role=="rec" ? "reception-label" : "newUser-label"}`}>
-                        {role}
-                    </label>
-
-                    <label className={"mt-2 text-[12px] font-Euclid text-[#FFC32C] font-[600]"}>
-                        {username}
-                    </label>
-
-                    <strong className={"text-[13px] text-black font-[500] mt-0 font-Euclid"}>
-                        {firstName+" "+lastName}
-                    </strong>
-
-
-                    <input ref={fileChooser} id={"fileSelect"} type={"file"} className={"hidden"}
-                           onChange={() => setProfileImage(event)}/> */}
-        {/* </div> */}
-
         {/*form container --------------------------------------------------------*/}
         <div
           className={
@@ -286,13 +220,13 @@ function Adduser() {
               <Input
                 id={"description"}
                 type={"text"}
-                value={firstName}
+                value={description}
                 required={true}
                 callBack={handleInput}
                 label={"Description"}
                 placeholder={"Description"}
-                validate={fNameValid}
-                message={Msg.fullNameMsg}
+                validate={descriptionValid}
+                message={Msg.descriptionMsg}
                 borderRequired={true}
               />
             </div>
@@ -300,14 +234,14 @@ function Adduser() {
             <div className={"w-[350px]"}>
               <Input
                 id={"unitPrice"}
-                value={lastName}
+                value={unitPrice}
                 type={"number"}
                 required={true}
                 callBack={handleInput}
                 label={"Unit Price"}
                 placeholder={"Unit Price"}
-                validate={lNameValid}
-                message={Msg.fullNameMsg}
+                validate={unitPriceValid}
+                message={Msg.floteNumberMsg}
                 borderRequired={true}
               />
             </div>
@@ -319,14 +253,14 @@ function Adduser() {
             <div className={"w-[350px]"}>
               <Input
                 id={"qtyOnHand"}
-                type={"text"}
-                value={email}
+                type={"number"}
+                value={qtyOnHand}
                 required={true}
                 callBack={handleInput}
                 label={"Qty On Hand"}
                 placeholder={"Qty On Hand"}
-                validate={emailValid}
-                message={Msg.emailMsg}
+                validate={qtyValid}
+                message={Msg.numberMsg}
                 borderRequired={true}
               />
             </div>
