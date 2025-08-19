@@ -1,7 +1,7 @@
 import "./App.css";
 import Login from "./view/login.tsx";
 import ItemView from "./view/itemView.tsx";
-import Adduser from "./view/adduser.tsx";
+import AddItem from "./view/addItem.tsx";
 import LoginDetailsView from "./view/loginDetailsView.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderView from "./view/orderView.tsx";
@@ -21,7 +21,7 @@ function App() {
           <Route path={"/"} element={<Login />} />
           <Route path={"/home"} element={<HomeView />}>
             <Route path={"item"} element={<ItemView />} />
-            <Route path={"add-item"} element={<Adduser />} />
+            <Route path={"add-item"} element={<AddItem />} />
           </Route>
           {/* <Route path={"/admin"} element={<AdminView/>}>
                     <Route path={"admin-dash"} element={<AdminDashboard/>}/>

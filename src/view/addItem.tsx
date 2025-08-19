@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Alert from "../components/alert/alert.tsx";
 
-function Adduser() {
+function AddItem() {
   let location = useLocation();
   let item = location?.state?.item;
 
@@ -278,4 +278,4 @@ function Adduser() {
   );
 }
 
-export default Adduser;
+export default AddItem;

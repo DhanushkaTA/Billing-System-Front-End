@@ -13,7 +13,7 @@ interface Props {
   username: string;
   email: string;
   proPic: string;
-  callBack: Function;
+  callBack?: Function;
 }
 
 function Header(props: Props) {

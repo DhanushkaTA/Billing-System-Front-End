@@ -1,13 +1,12 @@
 import { CiCirclePlus, CiEdit, CiTrash } from "react-icons/ci";
-// import Model from "../components/model/model.tsx";
 import Alert from "../components/alert/alert.tsx";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 // import Cookies from "js-cookie";
-
+import Input from "../components/input/input.tsx";
 import Model from "../components/model/model.tsx";
+import { CiSearch } from "react-icons/ci";
 
 interface ItemData {
   itemCode: string;
@@ -25,6 +24,8 @@ function ItemView() {
 
   const [open, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+
+  const [searchText, setSearchText] = useState("");
 
   let navigate = useNavigate();
 
@@ -65,7 +66,10 @@ function ItemView() {
     };
 
     await axios
-      .delete(`http://localhost:8080/Billing_System_war_exploded/item?code=${deleteId}`, config)
+      .delete(
+        `http://localhost:8080/Billing_System_war_exploded/item?code=${deleteId}`,
+        config
+      )
       .then((response) => {
         alert(response.data.message);
         console.log(response.data);
@@ -86,6 +90,12 @@ function ItemView() {
     setAlertMsg(msg);
     //Open alert
     setAlertOpen(true);
+  }
+
+  function handleInput(e: any, name: string) {
+    let search = e.target.value;
+    console.log(name + " : " + search);
+    setSearchText(e.target.value);
   }
 
   return (
@@ -112,6 +122,32 @@ function ItemView() {
           "w-full h-max flex flex-row justify-between items-center px-2"
         }
       >
+        {/*//////////////  Search Box ///////////////////////*/}
+        <div
+          className={
+            "bg-white w-[25rem] h-[48px] border-2 border-blue-500 rounded-md " +
+            "flex flex-row items-center justify-between"
+          }
+        >
+          <div className={"w-[90%]"}>
+            <Input
+              id={"search"}
+              value={searchText}
+              type={"text"}
+              placeholder={"Search item code here..."}
+              required={false}
+              callBack={handleInput}
+              validate={true}
+              borderColor={"5561F5"}
+              borderRequired={false}
+            />
+          </div>
+
+          <div className={"flex-1 flex items-center justify-center"}>
+            <CiSearch string={40} />
+          </div>
+        </div>
+
         <button
           onClick={() => navigate("/home/add-item")}
           className={`px-3 py-2 bg-[#4455EF] hover:bg-[#2355FF] text-white font-Euclid
