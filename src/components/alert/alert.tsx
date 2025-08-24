@@ -29,7 +29,7 @@ function Alert(props:Props) {
     // }
 
     return(
-        <section className={` top-1 right-0 z-[100] bg-transparent transition-all fixed
+        <section className={` top-1 right-0 z-[5000] bg-transparent transition-all fixed
          ${props.open ? "fixed translate-x-0" : `translate-x-[100%] ${clearTimeout(time)}`}`}>
             <img src={
                 `${props.type=='success' ? "../src/assets/images/alert/success-4.png" :

@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 
 interface Item{
     text:string,
+    code:string,
     icon?:any
 }
 
@@ -13,21 +14,25 @@ interface Props {
     label?:string,
     item:Item[],
     onlyIcon:boolean,
-    callBack: Function;
+    callBack?: Function,
+    data?:any
 }
 
 function Combobox(props:Props) {
 
     const [isDown, setIsDown] = useState<boolean>(true)
 
-    const [placeholder, setPlaceholder] = useState<string>(props.item[0].text)
+    // const [placeholder, setPlaceholder] = useState<string>(props.item[0].text)
+    const [placeholder, setPlaceholder] = useState<string>()
     const [icon, setIcon] = useState("")
+    const [code, setCode] = useState("")
 
     // const [selectValue, setSelectValue] = useState<Item>(null)
 
     useEffect(() => {
         props.label ?
-            setPlaceholder(props.item[0].text) : setPlaceholder(props.placeholder)
+            setPlaceholder("") : setPlaceholder(props.placeholder)
+            // setPlaceholder(props.item[0].text) : setPlaceholder(props.placeholder)
 
         props.item.map(value => {
             if(value.text===props.value){
@@ -47,14 +52,17 @@ function Combobox(props:Props) {
     useEffect(() => {
         console.log(placeholder)
 
-        props.callBack(placeholder,props.id)
+        props.callBack(placeholder,code)
     }, [placeholder]);
 
 
-    function clickFun(text:string, icon:string){
+    function clickFun(text:string, code:string){
         setPlaceholder(text)
-        setIcon(icon)
+        setCode(code)
+        // setIcon(code)
         setIsDown(true)
+        console.log("combo")
+        console.log(props.item)
     }
 
     return(
@@ -87,28 +95,13 @@ function Combobox(props:Props) {
                 className={`absolute w-full max-h-[200px] bg-white shadow rounded-md mt-3 overflow-y-auto scroll-bar
                             ${isDown ? "h-0" : "h-fit p-4 "} transition-all z-50`}>
 
-                {/*<li*/}
-                {/*    // id={value.text}*/}
-                {/*    onClick={() => clickFun('msi')}*/}
-                {/*    onClickCapture={() => props.callBack('msi', 'msi')}*/}
-                {/*    className={`relative flex flex-row items-center justify-center h-[45px] cursor-pointer overflow-hidden */}
-                {/*                        bg-white rounded-md px-2 hover:bg-[#F2F2F2] ${isDown ? "hidden" : "block"}`}>*/}
-                {/*    /!*<div*!/*/}
-                {/*    /!*    className={"bg-[url(src/assets/images/logo/brand/MSI.png)] object-fill bg-center bg-cover" +*!/*/}
-                {/*    /!*        " w-[100px] h-[80%] mr-5"}></div>*!/*/}
-                {/*    <img src={'src/assets/images/logo/brand/MSI.png'} className={"w-[100px]"}/>*/}
-                {/*    <span className={`text-[14px]`}>{props.label}</span>*/}
-                {/*</li>*/}
-
-
                 {
                     props.item.map((value,index) => {
 
                         return <li
                             key={index}
                             id={value.text}
-                            onClick={() => clickFun(value.text, value.icon)}
-                            // onClickCapture={() => props.callBack(value.text, props.id)}
+                            onClick={() => clickFun(value.text, value.code)}
                             className={`relative flex flex-row items-center h-[45px] cursor-pointer  
                                         bg-white rounded-md px-2 hover:bg-[#F2F2F2]  overflow-hidden
                                         ${value.icon ? "justify-center" : null}

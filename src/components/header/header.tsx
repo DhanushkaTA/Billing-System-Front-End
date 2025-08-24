@@ -87,7 +87,7 @@ function Header(props: Props) {
         }
       >
         <img
-          src={"./../assets/people/3.jpg"}
+          src={"../src/assets/images/people/2.jpg"}
           className={
             "w-11 h-11 object-fill bg-center bg-cover rounded-[100%] mr-3"
           }

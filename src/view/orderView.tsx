@@ -17,12 +17,12 @@ export interface OrderDetailsInterface{
 }
 
 export interface OrderInterface {
-    _id:string,
-    date:string,
+    orderId:string,
+    orderDate:string,
     totalQty:number,
-    totalAmount:number,
+    total:number,
     customerId:string,
-    orderDetails:OrderDetailsInterface[]
+    // orderDetails:OrderDetailsInterface[]
 }
 
 const OrderView: React.FC = () => {
@@ -56,7 +56,7 @@ const OrderView: React.FC = () => {
 
     useEffect(() => {
 
-        getAllRecodes()
+        // getAllRecodes()
 
         if(pageNumber === totalPages){
             setNextBtn(true)
@@ -126,21 +126,22 @@ const OrderView: React.FC = () => {
 
         const config = {
             headers: {
-                'Authorization': Cookies.get('tk')
-            }
+                "content-type": "application/json",
+            },
         };
 
-        axios.get(`http://localhost:9000/order/get/all?size=${recodeCount}&page=${pageNumber}`,config)
+        axios.get(`http://localhost:8080/Billing_System_war_exploded/order`,config)
             .then(response => {
 
                 console.log(response.data.data)
 
                 setDataArray(response.data.data)
-                setTotalPages(response.data.totalPages)
-                setTotalRecodes(response.data.totalRecodes)
+                // setTotalPages(response.data.totalPages)
+                // setTotalRecodes(response.data.totalRecodes)
 
             })
             .catch(error => {
+                console.log(error)
                 alert(error)
             })
 
@@ -160,18 +161,18 @@ const OrderView: React.FC = () => {
 
         const config = {
             headers: {
-                'Authorization': Cookies.get('tk')
-            }
+                "content-type": "application/json",
+            },
         };
 
-        await axios.delete(`http://localhost:9000/order/delete?id=${deleteId}`,config)
+        await axios.delete(`http://localhost:8080/Billing_System_war_exploded/order?code=${deleteId}`,config)
             .then(response => {
                 console.log(response.data)
                 showAlert('success',response.data.message)
             })
             .catch(error => {
-                console.log(error)
-                showAlert('error','')
+                console.log(error?.response?.data)
+                showAlert('error','Order not deleted!')
             })
         setOpen(false)
         setDeleteId("")
@@ -194,6 +195,17 @@ const OrderView: React.FC = () => {
         setItemList(itenList)
         setOpenItemPopUp(true)
     }
+
+    /////////////// Search filter ///////////////////
+
+    const filteredData = dataArray.filter((order) => {
+        if (!searchText.trim()) return true; // show all if empty
+        return (
+            order.orderId.toLowerCase().includes(searchText.toLowerCase()) ||
+            order.customerId.toLowerCase().includes(searchText.toLowerCase())
+        );
+    });
+
 
     return(
         <>
@@ -250,9 +262,9 @@ const OrderView: React.FC = () => {
                                     id={"search"}
                                     value={searchText}
                                     type={"text"}
-                                    placeholder={"Search order id here..."}
+                                    placeholder={"Search order id/ customer id here..."}
                                     required={false}
-                                    callBack={handleInput}
+                                    callBack={(e) => setSearchText(e.target.value)}
                                     validate={true}
                                     borderColor={"5561F5"}
                                     borderRequired={false}
@@ -284,8 +296,8 @@ const OrderView: React.FC = () => {
                             <tr className={""}>
                                 <th className={"py-2 text-left uppercase "}>order id</th>
                                 <th className={"py-2 text-left uppercase "}>order date</th>
-                                <th className={"py-2 text-left uppercase "}>total qty</th>
-                                <th className={"py-2 text-left uppercase"}>total amount</th>
+                                {/*<th className={"py-2 text-left uppercase "}>total qty</th>*/}
+                                <th className={"py-2 text-left uppercase"}>total amount (Rs.)</th>
                                 <th className={"py-2 text-left uppercase"}>customer id</th>
                                 <th className={"py-2 text-center uppercase"}>action</th>
                             </tr>
@@ -295,25 +307,21 @@ const OrderView: React.FC = () => {
 
 
                             {
-                                dataArray.map((value,index) => {
+                                filteredData.map((value,index) => {
 
 
                                     return <tr key={index} className={`bg-white`}>
 
                                         <td className={"font-medium text-[13px] border-b text-left py-2.5"}>
-                                            {value._id}
+                                            {value.orderId}
                                         </td>
 
                                         <td className={"font-medium text-[13px] border-b text-left max-w-[300px] py-2.5"}>
-                                            {value.date}
-                                        </td>
-
-                                        <td className={"font-medium text-[13px] border-b text-left max-w-[300px] py-2.5"}>
-                                            {value.totalQty}
+                                            {value.orderDate}
                                         </td>
 
                                         <td className={"font-medium text-[13px] border-b text-left py-2.5"}>
-                                            {value.totalAmount}
+                                            {value.total}
                                         </td>
 
                                         <td className={"font-medium text-[13px] border-b text-left py-2.5"}>
@@ -321,27 +329,27 @@ const OrderView: React.FC = () => {
                                         </td>
 
                                         <td className={" w-[10%] border-b text-center py-2.5"}>
-                                            <button
-                                                onClick={() => showOrderDetails(value._id,value.orderDetails)}
-                                                // onClick={() => navigate('/admin/add-item', {
-                                                //     state: {
-                                                //         item: value,
-                                                //         list: list
-                                                //     }
-                                                // })}
-                                                className={"p-1 border border-black rounded-[6px] group" +
-                                                    " hover:border-[#2355FF] mr-3"}>
-                                                <CiShare1  size={18} className={"group-hover:text-[#2355FF] "}/>
-                                            </button>
-
                                             {/*<button*/}
-                                            {/*    className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}*/}
-                                            {/*    // onClick={() => clickDeleteBtn(value._id)}*/}
-                                            {/*    onClick={() => clickDeleteBtn("5464867879")}*/}
-                                            {/*>*/}
-                                            {/*    /!*<CiTrash size={18} className={"group-hover:text-red-600"}/>*!/*/}
-                                            {/*    <CiTrash size={18} className={"text-red-600"}/>*/}
+                                            {/*    onClick={() => showOrderDetails(value._id,value.orderDetails)}*/}
+                                            {/*    // onClick={() => navigate('/admin/add-item', {*/}
+                                            {/*    //     state: {*/}
+                                            {/*    //         item: value,*/}
+                                            {/*    //         list: list*/}
+                                            {/*    //     }*/}
+                                            {/*    // })}*/}
+                                            {/*    className={"p-1 border border-black rounded-[6px] group" +*/}
+                                            {/*        " hover:border-[#2355FF] mr-3"}>*/}
+                                            {/*    <CiShare1  size={18} className={"group-hover:text-[#2355FF] "}/>*/}
                                             {/*</button>*/}
+
+                                            <button
+                                                className={"p-1 border rounded-[6px] group border-red-600 hover:bg-[#F4EBEF]"}
+                                                // onClick={() => clickDeleteBtn(value._id)}
+                                                onClick={() => clickDeleteBtn(value.orderId)}
+                                            >
+                                                {/*<CiTrash size={18} className={"group-hover:text-red-600"}/>*/}
+                                                <CiTrash size={18} className={"text-red-600"}/>
+                                            </button>
                                         </td>
 
                                     </tr>

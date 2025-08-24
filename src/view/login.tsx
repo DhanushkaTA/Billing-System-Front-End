@@ -67,7 +67,7 @@ function Login() {
         // }
 
         // navigate("/rec/cart");
-        navigate("/home");
+        navigate("/home/cart");
 
         // addLoginRecode(res);
       })

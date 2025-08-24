@@ -31,23 +31,25 @@ function Sidebar(props:Props) {
 
         const headers={"content-type" : 'application/json'}
 
-        let data = {
-            id : Cookies.get('login_id'),
-            logOutDate : DateUtil.getFullDateNow()
-        }
+        // let data = {
+        //     id : Cookies.get('login_id'),
+        //     logOutDate : DateUtil.getFullDateNow()
+        // }
+        //
+        // axios.put('http://localhost:9000/login/update',data,{headers:headers})
+        //     .then(response => {
+        //
+        //         navigate('/')
+        //
+        // })
+        //     .catch(error => {
+        //
+        //         alert("User not logout")
+        //         console.log(error)
+        //
+        //     })
 
-        axios.put('http://localhost:9000/login/update',data,{headers:headers})
-            .then(response => {
-
-                navigate('/')
-
-        })
-            .catch(error => {
-
-                alert("User not logout")
-                console.log(error)
-
-            })
+        navigate('/')
 
     }
 

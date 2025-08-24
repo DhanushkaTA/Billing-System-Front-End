@@ -2,6 +2,7 @@ import "./App.css";
 import Login from "./view/login.tsx";
 import ItemView from "./view/itemView.tsx";
 import AddItem from "./view/addItem.tsx";
+import CheackOutView from "./view/cheackOutView.tsx";
 import LoginDetailsView from "./view/loginDetailsView.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import OrderView from "./view/orderView.tsx";
@@ -26,6 +27,8 @@ function App() {
             <Route path={"add-item"} element={<AddItem />} />
             <Route path={"customer"} element={<CustomerView />} />
             <Route path={"add-customer"} element={<AddCustomer />} />
+            <Route path={"cart"} element={<CheackOutView />} />
+            <Route path={"order"} element={<OrderView />} />
           </Route>
           {/* <Route path={"/admin"} element={<AdminView/>}>
                     <Route path={"admin-dash"} element={<AdminDashboard/>}/>

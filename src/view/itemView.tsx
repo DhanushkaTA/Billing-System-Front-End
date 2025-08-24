@@ -98,6 +98,16 @@ function ItemView() {
     setSearchText(e.target.value);
   }
 
+  /////////////// Search filter ///////////////////
+
+  const filteredData = dataArray.filter((item) => {
+    if (!searchText.trim()) return true; // show all if empty
+    return (
+        item.itemCode.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchText.toLowerCase())
+    );
+  });
+
   return (
     <section
       className={
@@ -134,9 +144,9 @@ function ItemView() {
               id={"search"}
               value={searchText}
               type={"text"}
-              placeholder={"Search item code here..."}
+              placeholder={"Search item code/description here..."}
               required={false}
-              callBack={handleInput}
+              callBack={(e) => setSearchText(e.target.value)}
               validate={true}
               borderColor={"5561F5"}
               borderRequired={false}
@@ -215,7 +225,7 @@ function ItemView() {
             </thead>
 
             <tbody className={"mt-3 "}>
-              {dataArray.map((value, index) => {
+              {filteredData.map((value, index) => {
                 return (
                   <tr
                     key={index}

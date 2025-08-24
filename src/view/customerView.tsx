@@ -99,6 +99,18 @@ function CustomerView() {
     setSearchText(e.target.value);
   }
 
+  /////////////// Search filter ///////////////////
+
+  const filteredData = dataArray.filter((customer) => {
+    if (!searchText.trim()) return true; // show all if empty
+    return (
+        customer.accountNumber.toLowerCase().includes(searchText.toLowerCase()) ||
+        customer.fullName.toLowerCase().includes(searchText.toLowerCase()) ||
+        customer.address.toLowerCase().includes(searchText.toLowerCase()) ||
+        customer.phoneNumber.toLowerCase().includes(searchText.toLowerCase())
+    );
+  });
+
   return (
     <section
       className={
@@ -137,7 +149,7 @@ function CustomerView() {
               type={"text"}
               placeholder={"Search customer acc num here..."}
               required={false}
-              callBack={handleInput}
+              callBack={(e) => setSearchText(e.target.value)}
               validate={true}
               borderColor={"5561F5"}
               borderRequired={false}
@@ -219,7 +231,7 @@ function CustomerView() {
             </thead>
 
             <tbody className={"mt-3 "}>
-              {dataArray.map((value, index) => {
+              {filteredData.map((value, index) => {
                 return (
                   <tr key={index} className={"bg-white"}>
                     <td
